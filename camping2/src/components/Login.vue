@@ -1,20 +1,22 @@
 <template>
-    <form @submit.prevent="handleLogin">
-        <h3>Login</h3>
-
-        <div class="form-group">
-            <label>Email</label>
-            <input type="email" class="form-control" v-model="email" placeholder="Email"/>
+    <div class="min-h-screen flex items-center justify-center">
+      <form @submit.prevent="handleLogin" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 max-w-md">
+        <h3 class="text-2xl font-semibold mb-4">Login</h3>
+  
+        <div class="mb-4">
+          <label for="email" class="block text-gray-700">Email</label>
+          <input id="email" type="email" v-model="email" placeholder="Email" class="form-input mt-1 block w-full rounded-md" />
         </div>
-
-        <div class="form-group">
-            <label>Password</label>
-            <input type="password" class="form-control" v-model="password" placeholder="Password"/>
+  
+        <div class="mb-4">
+          <label for="password" class="block text-gray-700">Password</label>
+          <input id="password" type="password" v-model="password" placeholder="Password" class="form-input mt-1 block w-full rounded-md" />
         </div>
-
-        <button class="btn btn-primary btn-block">Login</button>
-    </form>
-</template>
+  
+        <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2 w-full">Login</button>
+      </form>
+    </div>
+  </template>
 
 <script>
     import axios from 'axios'
