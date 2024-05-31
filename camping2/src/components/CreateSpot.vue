@@ -27,11 +27,17 @@
           <label for="price" class="block text-gray-700">Price</label>
           <input id="price" type="number" v-model="price" placeholder="Price" class="form-input mt-1 block w-full rounded-md" />
         </div>
+
+        <div class="mb-4">
+        <label for="images" class="block text-sm font-medium text-gray-700 mb-2">Upload Images:</label>
+        <input type="file" ref="fileInput" id="images" class="w-full p-2 border border-gray-300 rounded-md" multiple />
+        </div>
+
   
         <button type="submit" class="bg-blue-500 text-white rounded-md px-4 py-2 w-full">Create</button>
       </form>
     </div>
-  </template>
+  </template>   
 
 <script>
     import axios from 'axios'
@@ -51,17 +57,30 @@
         methods: {
             async handleSubmit(){
                 try{
-                    const data = {
-                    name: this.name,
-                    location: this.location,
-                    description: this.description,
-                    capacity: this.capacity,
-                    price: this.price,
-                    owner: 1
-                    
+                const formData = new FormData();
+        
+                // Append form data
+                formData.append('name', this.name);
+                formData.append('location', this.location);
+                formData.append('capacity', this.capacity);
+                formData.append('description', this.description);
+                formData.append('price', this.price);
+                formData.append('owner',1);
+
+                const files = this.$refs.fileInput.files;
+                for (let i = 0; i < files.length; i++) {
+                  formData.append('images', files[i]);
                 }
 
-                const response = await axios.post('http://localhost:5151/api/CampingSpot/AddSpot', data);
+
+
+                
+
+                const response = await axios.post('http://localhost:5151/api/CampingSpot/AddSpot', formData,{
+                          headers: {
+                            'Content-Type': 'multipart/form-data'
+                          }}
+                );
                 this.message = response.data.message;
                 alert("Registry successful!");
                 } catch (error) {

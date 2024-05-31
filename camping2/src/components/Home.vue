@@ -13,6 +13,12 @@
             <p class="text-gray-800 mb-1">{{ spot.description }}</p>
             <p class="text-gray-800 mb-1">Capacity: {{ spot.capacity }}</p>
             <p class="text-gray-800 mb-1">Price: {{ spot.price }}</p>
+            <img v-for="image in spot.imagePaths" :key="image" :src="'../assets/'+image" :alt="image" />
+            <div v-for="image in spot.imagePaths" :key="image">
+              <img v-bind:src=getImageUrl(image) />  
+              {{ getImageUrl(image) }}
+            </div>
+            
             <button class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
               Book now!
             </button>
@@ -47,6 +53,9 @@
             console.error('Error fetching camping spots:', error);
           });
       },
+      getImageUrl(imageName) {
+      return `../assets/${imageName}`;
+    }
     },
   };
   </script>
