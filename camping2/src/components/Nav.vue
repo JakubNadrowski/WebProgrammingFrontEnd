@@ -10,6 +10,7 @@
            <a href="/login" class="text-gray-800 hover:text-gray-600">Login </a>
            <a href="/register" class="text-gray-800 hover:text-gray-600"> Sign up</a>
            </span>
+           
         <a href="/CreateSpot" class="text-gray-800 hover:text-gray-600">List your property</a>
         
       </div>
