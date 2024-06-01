@@ -37,8 +37,7 @@ export default {
         const response = await axios.post('http://localhost:5151/api/Users/Login', data);
         if (response.data.success) {
           store.commit('setUser', response.data.user);
-          alert("Login Successful");
-          console.log(store.state.user)}
+          alert("Login Successful");}
       } catch (error) {
         alert("An error has occurred. Make sure that the data is correct");
       }

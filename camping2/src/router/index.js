@@ -3,6 +3,7 @@ import Home from '@/components/Home.vue'
 import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
 import CreateSpot from '@/components/CreateSpot.vue'
+import ManageSpots from '@/components/ManageSpots.vue'
 import { compile } from 'vue'
 
 const routes = [
@@ -25,6 +26,11 @@ const routes = [
     path:'/CreateSpot',
     name:'CreateSpot',
     component: CreateSpot
+  },
+  {
+    path:'/ManageSpots',
+    name:'ManageSpot',
+    component: ManageSpots
   }
 ]
 
