@@ -101,7 +101,7 @@ export default {
   name: 'HomeTab',
   data() {
     return {
-      campingSpots: [],
+      campingSpots: [], // Initialize campingSpots as an empty array
       filters: {
         location: '',
         minCapacity: 0,
@@ -146,20 +146,20 @@ export default {
   },
   methods: {
     loadCampingSpots() {
-      return axios
-        .get('http://localhost:5151/api/CampingSpot/GetAllSpots')
-        .then(response => response.data)
-        .then(data => {
-          this.campingSpots = data;
-          console.log(this.campingSpots);
-        })
-        .catch(error => {
-          console.error('Error fetching camping spots:', error);
-        });
-    },
-    applyFiltersAndSort() {
-      // The computed property 'filteredAndSortedCampingSpots' will automatically react to changes in filters and sorting criteria.
-    },
+  return axios
+    .get('http://localhost:5151/api/CampingSpot/GetAllSpots')
+    .then(response => {
+      console.log('Response data:', response.data);
+      return response.data;
+    })
+    .then(data => {
+      this.campingSpots = Array.isArray(data) ? data : []; // Ensure data is an array
+      console.log('Camping spots:', this.campingSpots);
+    })
+    .catch(error => {
+      console.error('Error fetching camping spots:', error);
+    });
+},
   },
 };
 </script>

@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import axios from 'axios';
 
 export default {
@@ -50,8 +51,12 @@ export default {
       description: '',
       capacity: 0,
       price: 0,
-      owner: 1,  // Assuming the owner ID is static for simplicity
     };
+  },
+  computed: {
+    ...mapState({
+      user: state => state.user,
+    }),
   },
   methods: {
     async handleSubmit() {
@@ -64,7 +69,7 @@ export default {
         formData.append('capacity', this.capacity);
         formData.append('description', this.description);
         formData.append('price', this.price);
-        formData.append('owner', this.owner);
+        formData.append('owner', this.user.id);
 
         // Append multiple image files
         const files = this.$refs.fileInput.files;
