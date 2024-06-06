@@ -9,6 +9,7 @@
           <template v-if="user.isOwner">
             <a href="/CreateSpot" class="text-gray-800 hover:text-gray-600">List your property</a>
             <a href="/ManageSpots" class="text-gray-800 hover:text-gray-600">Manage your properties</a>
+            <a href="/UserMod" class="text-gray-800 hover:text-gray-600">Manage User</a>
           </template>
         </span>
         <span v-else class="flex items-center space-x-2">

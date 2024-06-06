@@ -76,7 +76,7 @@ export default {
       editSpot: {},
     };
   },
-  computed: {
+  computed: { 
     ...mapState({
       user: state => state.user,
     }),

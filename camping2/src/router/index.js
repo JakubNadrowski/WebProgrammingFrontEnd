@@ -4,6 +4,7 @@ import Login from '@/components/Login.vue'
 import Register from '@/components/Register.vue'
 import CreateSpot from '@/components/CreateSpot.vue'
 import ManageSpots from '@/components/ManageSpots.vue'
+import UserMod from '@/components/ManageUser.vue'
 import { compile } from 'vue'
 
 const routes = [
@@ -31,6 +32,11 @@ const routes = [
     path:'/ManageSpots',
     name:'ManageSpot',
     component: ManageSpots
+  },
+  {
+    path: '/UserMod',
+    name: 'ManageUser',
+    component: UserMod
   }
 ]
 
