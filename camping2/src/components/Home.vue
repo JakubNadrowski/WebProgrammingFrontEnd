@@ -88,7 +88,18 @@
       </div>
     </div>
 
-    <div v-if="selectedSpot" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center">
+    <div v-if="selectedSpot" class="mt-8">
+      <h2 class="text-2xl font-semibold mb-4">Bookings for {{ selectedSpot.name }}</h2>
+      <div v-if="bookings.length > 0">
+        <ul>
+          <li v-for="(booking, index) in bookings" :key="index">
+            <div  v-if="booking.spotID === selectedSpot.id" class="bg-gray-100 rounded-lg p-4 mb-4">
+              <p><strong>Start Date:</strong> {{ booking.startDate }}</p>
+              <p><strong>End Date:</strong> {{ booking.endDate }}</p>
+            </div>
+          </li>
+        </ul>
+      </div>
       <div class="bg-white p-6 rounded-lg shadow-lg">
         <h2 class="text-2xl font-semibold mb-4">Select a date range for {{ selectedSpot.name }}</h2>
         <label class="block text-gray-700 mb-2">Start Date:</label>
@@ -134,6 +145,7 @@ export default {
       selectedSpot: null, // To hold the selected spot for booking
       startDate: '', // To hold the start date for booking
       endDate: '', // To hold the end date for booking
+      bookings: [], // To hold the list of existing bookings
     };
   },
   computed: {
@@ -170,6 +182,7 @@ export default {
   },
   created() {
     this.loadCampingSpots();
+    this.loadBookings();
   },
   methods: {
     loadCampingSpots() {
@@ -187,26 +200,68 @@ export default {
           console.error('Error fetching camping spots:', error);
         });
     },
+    loadBookings() {
+      return axios
+        .get('http://localhost:5151/api/Booking/GetAllBookings')
+        .then(response => {
+          console.log('Response data:', response.data);
+          return response.data;
+        })
+        .then(data => {
+          this.bookings = Array.isArray(data) ? data : []; // Ensure data is an array
+          console.log('Bookings:', this.bookings);
+        })
+        .catch(error => {
+          console.error('Error fetching bookings:', error);
+        });
+    },
     selectSpot(spot) {
       this.selectedSpot = spot;
       this.startDate = ''; // Reset the start date when a new spot is selected
       this.endDate = ''; // Reset the end date when a new spot is selected
     },
-    bookSpot() {
-      if (this.startDate && this.endDate) {
-        if (new Date(this.endDate) >= new Date(this.startDate)) {
-          alert(`Booking confirmed for ${this.selectedSpot.name} from ${this.startDate} to ${this.endDate}`);
-          this.selectedSpot = null; // Close the date picker modal
-        } else {
-          alert('End date cannot be before start date.');
+    async bookSpot() {
+      try {
+        // Check for date conflicts
+        const hasConflict = this.bookings.some(booking => {
+          return (
+            booking.spotID === this.selectedSpot.id &&
+            ((new Date(this.startDate) >= new Date(booking.startDate) && new Date(this.startDate) <= new Date(booking.endDate)) ||
+            (new Date(this.endDate) >= new Date(booking.startDate) && new Date(this.endDate) <= new Date(booking.endDate)) ||
+            (new Date(booking.startDate) >= new Date(this.startDate) && new Date(booking.startDate) <= new Date(this.endDate)))
+          );
+        });
+
+        if (hasConflict) {
+          alert('This spot is already booked for the selected dates. Please choose different dates.');
+          return;
         }
-      } else {
-        alert('Please select both start and end dates before booking.');
+
+        const data = {
+          userID: this.user.id,
+          spotID: this.selectedSpot.id,
+          startDate: this.startDate,
+          endDate: this.endDate,
+        };
+
+        const response = await axios.post('http://localhost:5151/api/Booking/AddBooking', data);
+        console.log(data);
+        if (response.status === 200) {
+          alert('Booking Successful');
+          this.selectedSpot = null; // Close the booking modal
+          this.loadBookings(); // Reload bookings to reflect the new booking
+        } else {
+          alert('Booking unsuccessful, make sure to check your credentials');
+        }
+      } catch (error) {
+        alert('An error has occurred. Make sure that the data is correct');
       }
     },
   },
 };
 </script>
+ 
+
 
 <style scoped>
 /* Additional custom styles if needed */
