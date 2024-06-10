@@ -5,6 +5,7 @@ import Register from '@/components/Register.vue'
 import CreateSpot from '@/components/CreateSpot.vue'
 import ManageSpots from '@/components/ManageSpots.vue'
 import UserMod from '@/components/ManageUser.vue'
+import ManageBookings from '@/components/ManageBookings.vue'
 import { compile } from 'vue'
 
 const routes = [
@@ -37,6 +38,11 @@ const routes = [
     path: '/UserMod',
     name: 'ManageUser',
     component: UserMod
+  },
+  {
+    path: '/ManageBookings',
+    name: 'ManageBookings',
+    component: ManageBookings
   }
 ]
 

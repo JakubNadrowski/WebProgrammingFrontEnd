@@ -38,6 +38,9 @@ export default {
         if (response.data.success) {
           store.commit('setUser', response.data.user);
           alert("Login Successful");}
+        else{
+          alert("Login unsuccessful, make sure to check your credidentials")
+        }
       } catch (error) {
         alert("An error has occurred. Make sure that the data is correct");
       }

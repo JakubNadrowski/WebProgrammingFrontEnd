@@ -11,6 +11,10 @@
             <a href="/ManageSpots" class="text-gray-800 hover:text-gray-600">Manage your properties</a>
             <a href="/UserMod" class="text-gray-800 hover:text-gray-600">Manage User</a>
           </template>
+          <template v-else-if="user.isOwner===0">
+            <a href="/ManageBookings" class="text-gray-800 hover:text-gray-600">Manage your bookings</a>
+            <a href="/UserMod" class="text-gray-800 hover:text-gray-600">Manage User</a>
+          </template>
         </span>
         <span v-else class="flex items-center space-x-2">
           <span>Please log in.</span>
