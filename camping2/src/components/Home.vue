@@ -69,7 +69,7 @@
           <p class="text-gray-600 mb-1">{{ spot.location }}</p>
           <p class="text-gray-800 mb-1">{{ spot.description }}</p>
           <p class="text-gray-800 mb-1">Capacity: {{ spot.capacity }}</p>
-          <p class="text-gray-800 mb-1">Price: {{ spot.price }}</p>
+          <p class="text-gray-800 mb-1">Price: {{ spot.price }}$ /per night</p>
 
           <div class="flex flex-wrap mt-4 overflow-x-auto">
             <img
@@ -81,14 +81,36 @@
             />
           </div>
 
-          <button v-if="canBook" @click="selectSpot(spot)" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+          <button v-if="canBook" @click="selectSpot(spot), bookingModalOpen=true" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
             Book now!
           </button>
+          <button @click="selectSpot(spot); fetchComments(selectedSpot.id)" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+        View Comments
+        </button>
         </div>
       </div>
     </div>
 
-    <div v-if="selectedSpot" class="mt-8">
+
+    <div v-if="commentsModalOpen" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white p-8 rounded-lg">
+      <h2 class="text-2xl font-semibold mb-4">Comments for {{ selectedSpot.name }}</h2>
+      <ul>
+        <li v-for="(comment, index) in comments" :key="index" class="mb-4">
+          <div class="flex items-center mb-2">
+            <span class="font-semibold mr-2">Rating:</span>
+            <span>{{ comment.rating }}</span>
+          </div>
+          <p>{{ comment.comment }}</p>
+        </li>
+      </ul>
+      <button @click="closeCommentsModal" class="mt-4 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
+        Close
+      </button>
+    </div>
+  </div>
+
+    <div v-if="bookingModalOpen" class="mt-8">
       <h2 class="text-2xl font-semibold mb-4">Bookings for {{ selectedSpot.name }}</h2>
       <div v-if="bookings.length > 0">
         <ul>
@@ -114,10 +136,10 @@
           v-model="endDate"
           class="w-full p-2 border border-gray-300 rounded mb-4"
         />
-        <button @click="bookSpot" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
+        <button @click="bookSpot; bookingModalOpen= false" class="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600">
           Confirm Booking
         </button>
-        <button @click="selectedSpot = null" class="ml-2 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
+        <button @click="selectedSpot = null; bookingModalOpen= false" class="ml-2 bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600">
           Cancel
         </button>
       </div>
@@ -146,6 +168,9 @@ export default {
       startDate: '', // To hold the start date for booking
       endDate: '', // To hold the end date for booking
       bookings: [], // To hold the list of existing bookings
+      commentsModalOpen: false,
+      comments: [],
+      bookingModalOpen: false,
     };
   },
   computed: {
@@ -185,6 +210,20 @@ export default {
     this.loadBookings();
   },
   methods: {
+    fetchComments(spotId) {
+        axios.get(`http://localhost:5151/api/Comment/GetCommentsBySpotId?spotId=${spotId}`)
+            .then(response => {
+                this.comments = response.data;
+                this.commentsModalOpen = true; // Open the comments modal
+            })
+            .catch(error => {
+                console.error('Error fetching comments:', error);
+            });
+    },
+    closeCommentsModal() {
+      this.commentsModalOpen = false; // Close the modal
+      this.comments = []; // Clear comments
+    },
     loadCampingSpots() {
       return axios
         .get('http://localhost:5151/api/CampingSpot/GetAllSpots')

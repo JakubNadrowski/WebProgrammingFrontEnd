@@ -37,7 +37,9 @@ export default {
         const response = await axios.post('http://localhost:5151/api/Users/Login', data);
         if (response.data.success) {
           store.commit('setUser', response.data.user);
-          alert("Login Successful");}
+          alert("Login Successful");
+          this.$router.push({ name: 'home'});
+        }    
         else{
           alert("Login unsuccessful, make sure to check your credidentials")
         }

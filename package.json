@@ -5,6 +5,7 @@
     "bcryptjs": "^2.4.3",
     "vue-carousel": "^0.18.0",
     "vue-slick-carousel": "^1.0.6",
+    "vue3-datepicker": "^0.4.0",
     "vuex": "^4.1.0"
   }
 }

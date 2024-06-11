@@ -24,6 +24,8 @@
           >
             Edit
           </button>
+
+          <button type="button" @click="DeleteSpot(spot.id)" class="bg-gray-500 text-white py-2 px-4 rounded hover:bg-gray-600 mr-2">Delete booking</button>
         </div>
       </div>
     </div>
@@ -120,6 +122,19 @@ export default {
           console.error('Error updating camping spot:', error);
           alert('An error occurred while updating the spot');
         });
+    },
+    async DeleteSpot(spotid) {
+      try {
+        const response = await axios.delete(`http://localhost:5151/api/CampingSpot/DeleteSpot?spotId=${spotid}`);
+        if (response.status === 200) {
+            alert("Removal successful");
+            this.loadCampingSpots();
+        } else {
+            alert("Something went wrong");
+        }
+      } catch (error) {
+        alert("Something went really wrong");
+      }
     },
   },
 };

@@ -5,7 +5,7 @@
       <div class="flex space-x-4 items-center">
         <span v-if="user" class="flex items-center space-x-2">
           <span>Welcome, {{ user.fName }}</span>
-          <a href="#" @click.prevent="Logout" class="text-gray-800 hover:text-gray-600">Logout</a>
+          <a href="/" @click="Logout" class="text-gray-800 hover:text-gray-600">Logout</a>
           <template v-if="user.isOwner">
             <a href="/CreateSpot" class="text-gray-800 hover:text-gray-600">List your property</a>
             <a href="/ManageSpots" class="text-gray-800 hover:text-gray-600">Manage your properties</a>
